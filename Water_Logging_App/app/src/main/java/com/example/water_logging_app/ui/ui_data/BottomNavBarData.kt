@@ -17,7 +17,7 @@ data class BottomNavBarData(
 
 val BottomNavList =  listOf(
     BottomNavBarData(
-        name = "settings",
+        name = "Settings",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
     ),
@@ -27,7 +27,7 @@ val BottomNavList =  listOf(
         unselectedIcon = Icons.Outlined.Home
     ),
     BottomNavBarData(
-        name = "DataList",
+        name = "History",
         selectedIcon = Icons.Filled.DateRange,
         unselectedIcon = Icons.Outlined.DateRange
     )
