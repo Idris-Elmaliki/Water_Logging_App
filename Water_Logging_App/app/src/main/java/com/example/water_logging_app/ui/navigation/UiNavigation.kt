@@ -1,22 +1,36 @@
 package com.example.water_logging_app.ui.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.water_logging_app.ui.screens.HistoryScreen
-import com.example.water_logging_app.ui.screens.HomeScreen
-import com.example.water_logging_app.ui.screens.SettingScreen
+import androidx.navigation.compose.navigation
+import com.example.water_logging_app.ui.mainpage.main_screens.HistoryScreen
+import com.example.water_logging_app.ui.mainpage.main_screens.HomeScreen
+import com.example.water_logging_app.ui.mainpage.main_screens.SettingScreen
+
+
+const val TWEEN_AMOUNT = 550
 
 enum class UiNavigationRoutesEnum() {
     Home,
+        AddWater,
     Setting,
     History,
-    // will be created soon!
-    AddWater
+
 }
+
+/*
+* I want the Water Logging Screen to not be apart of the main navigation screen
+* It will be a pop-up screen once they user includes that overlays the entire screen!
+ */
 
 @Composable
 fun UiNavigationRoutes(
@@ -38,42 +52,77 @@ fun UiNavigationRoutes(
             arguments = listOf(/*this will be very useful for loading the users data!*/),
             deepLinks = listOf(/*I will need to implement this soon, will be useful for push notifications!*/),
             enterTransition = {
-                slideIntoContainer(
-                    towards = if(initialState.destination.route == UiNavigationRoutesEnum.Setting.name) {
-                        AnimatedContentTransitionScope.SlideDirection.Left
+                when(initialState.destination.route) {
+                    UiNavigationRoutesEnum.Setting.name -> {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
                     }
-                    else {
-                        AnimatedContentTransitionScope.SlideDirection.Right
+                    UiNavigationRoutesEnum.History.name -> {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
                     }
-                )
+                    UiNavigationRoutesEnum.AddWater.name -> {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
+                    }
+                    else -> {
+                        EnterTransition.None
+                    }
+                }
             },
             exitTransition = {
-                slideOutOfContainer(
-                    towards = if(targetState.destination.route == UiNavigationRoutesEnum.Setting.name) {
-                        AnimatedContentTransitionScope.SlideDirection.Right
-                    } else {
-                        AnimatedContentTransitionScope.SlideDirection.Left
+                when(targetState.destination.route) {
+                    UiNavigationRoutesEnum.Setting.name -> {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
                     }
-                )
+                    UiNavigationRoutesEnum.History.name -> {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
+                    }
+                    UiNavigationRoutesEnum.AddWater.name -> {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                            animationSpec = tween(TWEEN_AMOUNT)
+                        )
+                    }
+                    else -> {
+                        ExitTransition.None
+                    }
+                }
             }
         ) {
             HomeScreen(
                 onButtonClick = {
-                    // navController.navigate(UiNavigationRoutesEnum.AddWater.name)
+                    navController.navigate(UiNavigationRoutesEnum.AddWater.name)
                 }
             )
         }
+
+        waterGraph(navController)
+
         composable(
             route = UiNavigationRoutesEnum.Setting.name,
             enterTransition = {
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(TWEEN_AMOUNT)
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
-
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(TWEEN_AMOUNT)
                 )
             }
         ) {
@@ -85,12 +134,14 @@ fun UiNavigationRoutes(
             route = UiNavigationRoutesEnum.History.name,
             enterTransition = {
                 slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(TWEEN_AMOUNT)
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right
+                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(TWEEN_AMOUNT)
                 )
             }
         ) {
@@ -101,3 +152,27 @@ fun UiNavigationRoutes(
     }
 }
 
+// Nested Nav Graph function
+fun NavGraphBuilder.waterGraph(navController : NavController) {
+    navigation(
+        route = "add_water",
+        startDestination = UiNavigationRoutesEnum.AddWater.name,
+    ) {
+        composable(
+            route = UiNavigationRoutesEnum.AddWater.name,
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                    animationSpec = tween(TWEEN_AMOUNT)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                    animationSpec = tween(TWEEN_AMOUNT)
+                )
+            }
+        ) {
+        }
+    }
+}

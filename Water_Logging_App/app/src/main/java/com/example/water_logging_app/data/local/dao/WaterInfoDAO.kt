@@ -36,6 +36,6 @@ interface WaterInfoDAO {
     fun getWaterDataByTimeListDSC() : Flow<List<WaterInfoEntity>>
 
     // Used to get the data for the current day as a List for the Home Ui Page
-    @Query("SELECT * FROM water_info_table WHERE timeOfInput >= :startOfToday AND timeOfInput <= :endOfToday")
-    fun getWaterDataByDay(startOfToday : String, endOfToday : String) : Flow<List<WaterInfoEntity>>
+    @Query("SELECT * FROM water_info_table WHERE date == :today ORDER BY timeOfInput ASC")
+    fun getWaterDataByDay(today : String) : Flow<List<WaterInfoEntity>>
 }

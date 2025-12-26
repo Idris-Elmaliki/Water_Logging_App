@@ -5,6 +5,7 @@ data class WaterLogDataList(
 )
 data class WaterLogDataUiState(
     val amountOfWater : Int? = null,
-    val measrementType : String? = null,
-    val timeOfInput : String
+    val measurementType : String? = null,
+    val timeOfInput : String,
+    val date : String
 )

@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import com.example.water_logging_app.ui.WaterLogUiLayout
+import com.example.water_logging_app.ui.mainpage.WaterLogUiLayout
 import com.example.water_logging_app.ui.theme.Water_Logging_AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,6 +16,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Water_Logging_AppTheme {
+
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        enableEdgeToEdge()
+        setContent {
+            Water_Logging_AppTheme() {
                 WaterLogUiLayout(
                     modifier = Modifier
                         .fillMaxSize()
