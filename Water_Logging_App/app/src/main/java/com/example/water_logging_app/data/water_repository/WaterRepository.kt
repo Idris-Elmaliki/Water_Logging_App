@@ -40,20 +40,18 @@ class WaterRepository(
         val waterInfo = WaterInfoEntity(
             amountOfWater = waterAmount,
             measurement = measurementType,
-            // place holder
-            timeOfInput = System.currentTimeMillis().toString()
+            // place holders
+            timeOfInput = System.currentTimeMillis().toString(),
+            date = System.currentTimeMillis().toString()
         )
 
         waterDao.insertWaterLogData(waterInfo)
     }
 
-     fun getDailyWaterLogInfo(
-         start : String,
-         end : String
-     ) : Flow<List<WaterInfoEntity>> {
+     fun getDailyWaterLogInfo(todaysDate : String)
+     : Flow<List<WaterInfoEntity>> {
         return waterDao.getWaterDataByDay(
-            startOfToday = start,
-            endOfToday = end
+            today = todaysDate
         )
     }
 }
