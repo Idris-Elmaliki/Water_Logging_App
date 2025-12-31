@@ -29,13 +29,23 @@ interface WaterInfoDAO {
     * Will be used in the History channel
     * (We want the user to be able to choose different sorting options)
     */
+
     @Query("SELECT * FROM water_info_table ORDER BY timeOfInput ASC")
     fun getWaterDataByTimeListASC() : Flow<List<WaterInfoEntity>>
 
     @Query("SELECT * FROM water_info_table ORDER BY timeOfInput DESC")
     fun getWaterDataByTimeListDSC() : Flow<List<WaterInfoEntity>>
 
-    // Used to get the data for the current day as a List for the Home Ui Page
-    @Query("SELECT * FROM water_info_table WHERE date == :today ORDER BY timeOfInput ASC")
+    /*
+    * With the power of ISOs we can do something like this!
+    *
+    * I was able to compare today (the currentDay) to the new ISO string format within the database.
+    * What the Query is saying is to find the timeOfInput that is == to current Day
+    * And what the % does is actually different, it is NOT the modulus operator!
+    * Instead it tells ROOM to ignore all the data passed the data we called for in today parameter!
+    *
+    * ISO strings are a VERY powerful tool!
+    */
+    @Query("SELECT * FROM water_info_table WHERE timeOfInput LIKE :today || '%' ORDER BY timeOfInput ASC")
     fun getWaterDataByDay(today : String) : Flow<List<WaterInfoEntity>>
 }
