@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.water_logging_app.data.local.entity.UserPreferenceEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserPreferenceDAO {
@@ -18,6 +17,9 @@ interface UserPreferenceDAO {
     @Query("SELECT preferredMeasurement FROM user_preference_table LIMIT 1")
     suspend fun getPreferredMeasurement() : String
 
-    @Query("SELECT dailyGoal FROM user_preference_table WHERE dailyGoal")
+    @Query("SELECT dailyGoal FROM user_preference_table LIMIT 1")
     suspend fun getUsersDailyGoal() : Long
+
+    @Query("SELECT name FROM user_preference_table LIMIT 1")
+    suspend fun getUserName() : String
 }

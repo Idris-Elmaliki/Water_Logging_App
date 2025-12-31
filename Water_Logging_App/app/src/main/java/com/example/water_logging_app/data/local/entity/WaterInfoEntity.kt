@@ -9,7 +9,6 @@ data class WaterInfoEntity(
     val id : Long? = null,
 
     val amountOfWater: Int,
-    val measurement : String? = null,
-    val timeOfInput : String? = null,
-    val date : String? = null
+    val measurement : String,
+    val timeOfInput : String,
 )
