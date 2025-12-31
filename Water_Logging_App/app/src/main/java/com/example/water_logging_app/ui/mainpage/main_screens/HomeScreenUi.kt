@@ -30,10 +30,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.water_logging_app.R
+import com.example.water_logging_app.data.time.currentDate
+import com.example.water_logging_app.data.time.currentTime
 import com.example.water_logging_app.ui.theme.Cyan
 import kotlinx.coroutines.delay
-import java.text.DateFormat
-import java.util.Calendar
 
 /*
 * What I have so far is just the shell for the home page ui!
@@ -66,17 +66,17 @@ fun HomeScreen(
                 .fillMaxWidth()
         ) {
             CurrentGoalCard(
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .padding(dimensionResource(R.dimen.icon_padding))
             )
             CurrentGoalAmountMatched(
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .padding(dimensionResource(R.dimen.icon_padding))
             )
         }
         AddNewDate(
             onButtonClick,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .padding(dimensionResource(R.dimen.container_padding))
                 .fillMaxHeight()
         )
@@ -94,13 +94,13 @@ private fun CurrentGoalCard(
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .padding(dimensionResource(R.dimen.container_padding))
         ) {
             Text(
                 text = stringResource(R.string.Target),
                 style = MaterialTheme.typography.labelMedium,
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .alpha(ALPHA_AMOUNT)
             )
             Spacer(
@@ -129,7 +129,7 @@ private fun CurrentGoalAmountMatched(
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .padding(dimensionResource(R.dimen.container_padding))
         ) {
             Text(
@@ -155,8 +155,8 @@ private fun CurrentGoalAmountMatched(
             Text(
                 text = stringResource(R.string.Goal_amount_reached),
                 style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Companion.Center,
-                modifier = Modifier.Companion
+                textAlign = TextAlign.Center,
+                modifier = Modifier
                     .padding(dimensionResource(R.dimen.text_padding))
                     .alpha(0.7f)
             )
@@ -177,18 +177,18 @@ private fun AddNewDate(
         Text(
             text = stringResource(R.string.Empty_Log_Description),
             style = MaterialTheme.typography.labelMedium,
-            textAlign = TextAlign.Companion.Center,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .alpha(ALPHA_AMOUNT)
                 .padding(dimensionResource(R.dimen.text_padding))
         )
         Spacer(
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .padding(dimensionResource(R.dimen.container_padding))
         )
         IconButton(
             onClick = onButtonClick,
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .background(
                     color = Cyan,
                     shape = MaterialTheme.shapes.extraLarge,
@@ -198,7 +198,7 @@ private fun AddNewDate(
             Icon(
                 imageVector = Icons.Outlined.Add,
                 contentDescription = null,
-                modifier = Modifier.Companion
+                modifier = Modifier
                     .size(dimensionResource(R.dimen.text_bubble_size))
                     .padding(dimensionResource(R.dimen.icon_padding)),
             )
@@ -240,7 +240,7 @@ private fun GreetingText() {
         Text(
             text = stringResource(R.string.Good_Morning),
             style = MaterialTheme.typography.labelMedium,
-            textAlign = TextAlign.Companion.Start,
+            textAlign = TextAlign.Start,
             modifier = Modifier
                 .alpha(ALPHA_AMOUNT)
                 .padding(bottom = dimensionResource(R.dimen.text_padding))
@@ -248,21 +248,7 @@ private fun GreetingText() {
         Text(
             text = "Idris Elmaliki",
             style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Companion.Start
+            textAlign = TextAlign.Start
         )
     }
-}
-
-private fun currentDate() : String {
-    val date = Calendar.getInstance().time
-    val dateFormat = DateFormat.getDateInstance().format(date)
-
-    return dateFormat
-}
-
-private fun currentTime() : String {
-    val time = Calendar.getInstance().time
-    val timeFormat = DateFormat.getTimeInstance().format(time)
-
-    return timeFormat
 }

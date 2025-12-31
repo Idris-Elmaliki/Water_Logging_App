@@ -16,18 +16,25 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.water_logging_app.ui.navigation.UiNavigationRoutes
-import com.example.water_logging_app.ui.ui_data.BottomNavList
+import com.example.water_logging_app.ui.mainpage.ui_data.BottomNavList
+import com.example.water_logging_app.ui.navigation.UiNavigationRoutesEnum
+import com.example.water_logging_app.ui.navigation.homeGraph
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterLogUiLayout(
     modifier : Modifier = Modifier,
-    /*made the navController instance here, to ensure */
-    navController : NavHostController = rememberNavController(),
+    rootNavController : NavController,
 ) {
+    // here I made the nav Controller for ONLY the bottom navigation bar
+    // This allows me to have full control of the Nav Graph, while having nested nav graphs!
+    val bottomNavController : NavHostController = rememberNavController()
+
     var selectItem by remember { mutableIntStateOf(1) }
 
     Scaffold(
@@ -53,7 +60,7 @@ fun WaterLogUiLayout(
                         selected = (selectItem == index),
                         onClick = {
                             selectItem = index
-                            navController.navigate(item.navHostName)
+                            bottomNavController.navigate(item.navHostName)
                         },
                         label = {
                             Text(
@@ -65,11 +72,19 @@ fun WaterLogUiLayout(
             }
         }
     ) { innerpadding ->
-        UiNavigationRoutes(
-            navController = navController,
-            modifier = modifier
+        // I create a second NavHost and called homeGraph (check navigation for more details)
+        // this ensures that we don't have to call the func one by one (removes redundancy)
+        NavHost(
+            navController = bottomNavController,
+            startDestination = UiNavigationRoutesEnum.Home.name,
+            modifier = Modifier
                 .padding(innerpadding)
                 .safeContentPadding()
-        )
+        ) {
+            homeGraph(
+                navController = rootNavController,
+                modifier = modifier
+            )
+        }
     }
 }

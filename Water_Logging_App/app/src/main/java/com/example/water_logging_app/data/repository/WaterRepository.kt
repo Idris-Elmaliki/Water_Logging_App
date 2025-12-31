@@ -32,17 +32,16 @@ class WaterRepository(
     private val waterDao = waterDatabase.waterLogDao()
 
     // below are the functions for the database!
-
     suspend fun insertWaterData(
         waterAmount : Int,
-        measurementType : String
+        measurementType : String,
+        currentTime : String,
     ) {
         val waterInfo = WaterInfoEntity(
             amountOfWater = waterAmount,
             measurement = measurementType,
-            // place holders
-            timeOfInput = System.currentTimeMillis().toString(),
-            date = System.currentTimeMillis().toString()
+            // now has a proper value
+            timeOfInput = currentTime,
         )
 
         waterDao.insertWaterLogData(waterInfo)
@@ -53,5 +52,13 @@ class WaterRepository(
         return waterDao.getWaterDataByDay(
             today = todaysDate
         )
+    }
+
+    fun getWaterLogInfoHistoryASC() : Flow<List<WaterInfoEntity>> {
+        return waterDao.getWaterDataByTimeListASC()
+    }
+
+    fun getWaterLogInfoHistoryDSC() : Flow<List<WaterInfoEntity>> {
+        return waterDao.getWaterDataByTimeListDSC()
     }
 }
